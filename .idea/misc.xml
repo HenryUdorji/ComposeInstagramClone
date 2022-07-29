@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ifechukwu.udorji/WorkFolder/Personal/Android/Compose/ComposeInstagramClone/app/src/main/res/drawable-night/ic_back_arrow_night.xml" value="0.129" />
         <entry key="..\:/Users/ifechukwu.udorji/WorkFolder/Personal/Android/Compose/ComposeInstagramClone/app/src/main/res/drawable-night/ic_instagram_logo__1_.xml" value="0.1" />
         <entry key="..\:/Users/ifechukwu.udorji/WorkFolder/Personal/Android/Compose/ComposeInstagramClone/app/src/main/res/drawable/bg_splash.xml" value="0.129" />
+        <entry key="..\:/Users/ifechukwu.udorji/WorkFolder/Personal/Android/Compose/ComposeInstagramClone/app/src/main/res/drawable/ic_back_arrow.xml" value="0.129" />
         <entry key="..\:/Users/ifechukwu.udorji/WorkFolder/Personal/Android/Compose/ComposeInstagramClone/app/src/main/res/drawable/ic_meta.xml" value="0.129" />
         <entry key="..\:/Users/ifechukwu.udorji/WorkFolder/Personal/Android/Compose/ComposeInstagramClone/app/src/main/res/drawable/ic_user.xml" value="0.1" />
         <entry key="..\:/Users/ifechukwu.udorji/WorkFolder/Personal/Android/Compose/ComposeInstagramClone/app/src/main/res/layout/activity_splash.xml" value="0.23645833333333333" />

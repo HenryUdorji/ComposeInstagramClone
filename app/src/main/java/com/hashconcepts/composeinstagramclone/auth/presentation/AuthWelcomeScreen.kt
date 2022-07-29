@@ -1,7 +1,6 @@
 package com.hashconcepts.composeinstagramclone.auth.presentation
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -11,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -81,25 +81,35 @@ fun AuthWelcomeScreen(
             )
         }
 
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter)) {
 
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
+            Box(modifier = Modifier
+                .height(1.dp)
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 40.dp)
-        ) {
-            Text(
-                text = "Don't have an account?",
-                style = MaterialTheme.typography.button,
-                color = Color.Gray.copy(alpha = 0.6f),
-            )
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(
-                text = "Sign up",
-                style = MaterialTheme.typography.button,
-                modifier = Modifier.clickable {}
-            )
+                .background(Color.Gray.copy(alpha = 0.2f)))
+            
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 40.dp)
+            ) {
+                Text(
+                    text = "Don't have an account?",
+                    style = MaterialTheme.typography.button,
+                    color = Color.Gray.copy(alpha = 0.7f),
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = "Sign up",
+                    style = MaterialTheme.typography.button,
+                    modifier = Modifier.clickable {}
+                )
+            }
         }
     }
 }
