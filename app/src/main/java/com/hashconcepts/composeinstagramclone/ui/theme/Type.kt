@@ -35,7 +35,7 @@ val Typography = Typography(
     button = TextStyle(
         fontFamily = sfUIDisplay,
         fontWeight = FontWeight.Bold,
-        fontSize = 13.sp
+        fontSize = 14.sp
     ),
     /* Other default text styles to override
 
