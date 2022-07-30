@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.hashconcepts.composeinstagramclone.auth.presentation.NavGraphs
 import com.hashconcepts.composeinstagramclone.ui.theme.ComposeInstagramCloneTheme
 import com.ramcosta.composedestinations.DestinationsNavHost

@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.common
+package com.hashconcepts.composeinstagramclone.common.data
 
 import android.content.SharedPreferences
 import com.hashconcepts.composeinstagramclone.common.utils.Constants
