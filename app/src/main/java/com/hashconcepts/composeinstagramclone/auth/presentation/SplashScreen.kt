@@ -36,7 +36,7 @@ fun SplashScreen(
 ) {
 
     LaunchedEffect(key1 = true) {
-        delay(2000L)
+        delay(500L)
         navigator.popBackStack()
         navigator.navigate(AuthWelcomeScreenDestination)
     }

@@ -20,6 +20,7 @@ import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.LoginScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
+import com.hashconcepts.composeinstagramclone.ui.theme.LightGray
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -55,6 +56,7 @@ fun AuthWelcomeScreen(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(85.dp),
+                placeholder = painterResource(id = R.drawable.profile_placeholder),
                 contentScale = ContentScale.Crop
             )
 
@@ -101,7 +103,7 @@ fun AuthWelcomeScreen(
                 Text(
                     text = "Don't have an account?",
                     style = MaterialTheme.typography.button,
-                    color = Color.Gray.copy(alpha = 0.7f),
+                    color = LightGray,
                 )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(
