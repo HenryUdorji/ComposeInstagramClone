@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.hashconcepts.composeinstagramclone.ui.theme.*
@@ -42,7 +41,7 @@ fun CustomFormTextField(
     TextField(
         modifier = modifier.border(
             width = 1.dp,
-            color = if (darkTheme) LineColorDark else LineColorLight,
+            color = if (darkTheme) FormFieldBorderDark else FormFieldBorderLight,
             shape = RoundedCornerShape(10)
         ),
         value = value,

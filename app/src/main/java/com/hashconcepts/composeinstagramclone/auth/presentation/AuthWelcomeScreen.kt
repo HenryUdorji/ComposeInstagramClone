@@ -21,6 +21,7 @@ import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.Log
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
 import com.hashconcepts.composeinstagramclone.ui.theme.LightGray
+import com.hashconcepts.composeinstagramclone.ui.theme.LineColor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -90,7 +91,7 @@ fun AuthWelcomeScreen(
             Box(modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
-                .background(Color.Gray.copy(alpha = 0.2f)))
+                .background(LineColor))
             
             Spacer(modifier = Modifier.height(18.dp))
 
