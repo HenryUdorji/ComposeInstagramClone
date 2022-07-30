@@ -97,7 +97,7 @@ fun LoginScreen(
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .padding(end = 16.dp)
-                    .fillMaxWidth()
+                    .align(Alignment.End)
                     .clickable { }
             )
 

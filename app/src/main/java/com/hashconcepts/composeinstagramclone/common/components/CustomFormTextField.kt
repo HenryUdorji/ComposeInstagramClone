@@ -64,6 +64,7 @@ fun CustomFormTextField(
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
+            cursorColor = AccentColor,
             backgroundColor = if (darkTheme) FormFieldBgDark else FormFieldBgLight
         )
     )
