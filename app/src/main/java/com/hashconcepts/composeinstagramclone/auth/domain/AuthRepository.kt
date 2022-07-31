@@ -17,7 +17,7 @@ interface AuthRepository {
 
     fun getUser() : FirebaseUser?
 
-    suspend fun sendPasswordResetEmail(email :String)
+    suspend fun sendPasswordResetEmail(email :String): Boolean
 
     suspend fun verifyPasswordResetCode(code: String)
 

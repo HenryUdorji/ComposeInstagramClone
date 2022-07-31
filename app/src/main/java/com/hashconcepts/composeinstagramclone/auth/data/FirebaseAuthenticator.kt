@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hashconcepts.composeinstagramclone.auth.domain.Authenticator
+import kotlinx.coroutines.tasks.await
 
 /**
  * @created 30/07/2022 - 3:36 AM
@@ -25,22 +26,24 @@ class FirebaseAuthenticator: Authenticator {
         email: String,
         password: String
     ): FirebaseUser? {
-        TODO("Not yet implemented")
+        Firebase.auth.signInWithEmailAndPassword(email, password).await()
+        return Firebase.auth.currentUser
     }
 
     override fun signOut(): FirebaseUser? {
-        TODO("Not yet implemented")
+        Firebase.auth.signOut()
+        return Firebase.auth.currentUser
     }
 
     override fun getUser(): FirebaseUser? {
-        TODO("Not yet implemented")
+        return Firebase.auth.currentUser
     }
 
     override suspend fun sendPasswordResetEmail(email: String) {
-        TODO("Not yet implemented")
+        Firebase.auth.sendPasswordResetEmail(email).await()
     }
 
     override suspend fun verifyPasswordResetCode(code: String) {
-        TODO("Not yet implemented")
+        Firebase.auth.verifyPasswordResetCode(code)
     }
 }

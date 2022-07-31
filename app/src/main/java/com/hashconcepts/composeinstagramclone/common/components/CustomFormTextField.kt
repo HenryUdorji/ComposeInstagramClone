@@ -5,18 +5,22 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.ui.theme.*
 
 /**
@@ -37,6 +41,7 @@ fun CustomFormTextField(
 ) {
     val darkTheme: Boolean = isSystemInDarkTheme()
     val keyboardController = LocalSoftwareKeyboardController.current
+    var passwordVisible by remember { mutableStateOf(false) }
 
     TextField(
         modifier = modifier.border(
@@ -65,6 +70,14 @@ fun CustomFormTextField(
             unfocusedIndicatorColor = Color.Transparent,
             cursorColor = AccentColor,
             backgroundColor = if (darkTheme) FormFieldBgDark else FormFieldBgLight
-        )
+        ),
+        trailingIcon = {
+            if (visualTransformation == PasswordVisualTransformation()) {
+                val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, contentDescription = null)
+                }
+            }
+        }
     )
 }

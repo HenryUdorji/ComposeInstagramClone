@@ -35,8 +35,9 @@ class AuthRepositoryImpl @Inject constructor(
         return authenticator.getUser()
     }
 
-    override suspend fun sendPasswordResetEmail(email: String) {
-        return authenticator.sendPasswordResetEmail(email)
+    override suspend fun sendPasswordResetEmail(email: String): Boolean {
+        authenticator.sendPasswordResetEmail(email)
+        return true
     }
 
     override suspend fun verifyPasswordResetCode(code: String) {
