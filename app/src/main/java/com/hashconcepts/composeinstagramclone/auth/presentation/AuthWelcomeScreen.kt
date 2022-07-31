@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.LoginScreenDestination
+import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
 import com.hashconcepts.composeinstagramclone.ui.theme.LightGray
@@ -110,7 +111,9 @@ fun AuthWelcomeScreen(
                 Text(
                     text = "Sign up",
                     style = MaterialTheme.typography.button,
-                    modifier = Modifier.clickable {}
+                    modifier = Modifier.clickable {
+                        navigator.navigate(RegisterScreenDestination)
+                    }
                 )
             }
         }

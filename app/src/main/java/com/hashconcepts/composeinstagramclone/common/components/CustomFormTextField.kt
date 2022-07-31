@@ -42,6 +42,11 @@ fun CustomFormTextField(
     val darkTheme: Boolean = isSystemInDarkTheme()
     val keyboardController = LocalSoftwareKeyboardController.current
     var passwordVisible by remember { mutableStateOf(false) }
+    val transformation = if (visualTransformation == PasswordVisualTransformation()) {
+        if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+    } else {
+        visualTransformation
+    }
 
     TextField(
         modifier = modifier.border(
@@ -55,7 +60,7 @@ fun CustomFormTextField(
             Text(text = hint)
         },
         singleLine = true,
-        visualTransformation = visualTransformation,
+        visualTransformation = transformation,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
             imeAction = ImeAction.Done

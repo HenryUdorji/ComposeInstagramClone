@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hashconcepts.composeinstagramclone.R
+import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.CustomFormTextField
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
@@ -177,7 +178,10 @@ fun LoginScreen(
                 Text(
                     text = "Sign up",
                     style = MaterialTheme.typography.button,
-                    modifier = Modifier.clickable {}
+                    modifier = Modifier.clickable {
+                        navigator.popBackStack()
+                        navigator.navigate(RegisterScreenDestination)
+                    }
                 )
             }
         }
