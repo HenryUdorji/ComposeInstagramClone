@@ -21,3 +21,8 @@ sealed class ResultEvents {
     data class OnError(val message: String): ResultEvents()
     data class OnSuccess(val message: String?): ResultEvents()
 }
+
+data class ValidationResult(
+    val successful: Boolean,
+    val error: String? = null
+)

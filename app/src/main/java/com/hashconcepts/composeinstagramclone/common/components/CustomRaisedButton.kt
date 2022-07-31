@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
+import com.hashconcepts.composeinstagramclone.ui.theme.IconDark
 
 /**
  * @created 29/07/2022 - 11:24 PM
@@ -24,13 +25,13 @@ fun CustomRaisedButton(
 ) {
 
     Button(
-        modifier = modifier.height(44.dp),
+        modifier = modifier,
         colors = ButtonDefaults.buttonColors(backgroundColor = AccentColor),
         shape = RoundedCornerShape(size = 5.dp),
         onClick = onClick
     ) {
         if (isLoading) {
-            CircularProgressIndicator(color = AccentColor)
+            CircularProgressIndicator(color = IconDark)
         } else {
             Text(text = text, style = MaterialTheme.typography.button, color = Color.White)
         }
