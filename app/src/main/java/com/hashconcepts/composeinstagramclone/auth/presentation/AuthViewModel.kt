@@ -1,10 +1,12 @@
 package com.hashconcepts.composeinstagramclone.auth.presentation
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FieldValue
 import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 import com.hashconcepts.composeinstagramclone.auth.domain.AuthRepository
 import com.hashconcepts.composeinstagramclone.auth.domain.AuthValidator
@@ -38,9 +40,16 @@ class AuthViewModel @Inject constructor(
 
             }
             is AuthScreenEvents.OnRegister -> {
+                if (authScreenEvents.imageUri == null) {
+                    viewModelScope.launch {
+                        eventChannel.send(ResultEvents.OnError("You have not selected an image"))
+                    }
+                    return
+                }
+
                 val result = AuthValidator.validateCreateUserRequest(authScreenEvents.createUserDto)
                 if (result.successful) {
-                    createUser(authScreenEvents.createUserDto)
+                    createUser(authScreenEvents.imageUri, authScreenEvents.createUserDto)
                 } else {
                     viewModelScope.launch {
                         eventChannel.send(ResultEvents.OnError(result.error!!))
@@ -51,13 +60,24 @@ class AuthViewModel @Inject constructor(
     }
 
 
-    private fun createUser(createUserDto: CreateUserDto) = viewModelScope.launch {
+    private fun createUser(imageUri: Uri, createUserDto: CreateUserDto) = viewModelScope.launch {
         isLoading = true
         try {
-            authRepository.createUserWithEmailAndPassword(
+            val firebaseUser = authRepository.createUserWithEmailAndPassword(
                 createUserDto.email,
                 createUserDto.password
             )
+            firebaseUser?.let { user ->
+                val imageUrl = authRepository.uploadUserProfile(imageUri)
+
+                val updatedUser = createUserDto.copy(
+                    uid = user.uid,
+                    createdDate = FieldValue.serverTimestamp(),
+                    imageUrl = imageUrl
+                )
+                authRepository.saveUserProfile(updatedUser)
+            }
+
             isLoading = false
             eventChannel.send(ResultEvents.OnSuccess("User created successfully."))
         } catch (e: Exception) {

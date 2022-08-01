@@ -1,6 +1,7 @@
 package com.hashconcepts.composeinstagramclone.common.components
 
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -33,7 +34,12 @@ fun CustomRaisedButton(
         if (isLoading) {
             CircularProgressIndicator(color = IconDark)
         } else {
-            Text(text = text, style = MaterialTheme.typography.button, color = Color.White)
+            Text(
+                text = text,
+                style = MaterialTheme.typography.button,
+                color = Color.White,
+                modifier = Modifier.padding(vertical = 7.dp)
+            )
         }
     }
 }

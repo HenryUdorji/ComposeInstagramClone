@@ -1,5 +1,6 @@
 package com.hashconcepts.composeinstagramclone.auth.presentation
 
+import android.net.Uri
 import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 
 /**
@@ -14,7 +15,7 @@ data class AuthScreenState(
 
 sealed class AuthScreenEvents {
     data class OnLogin(val username: String, val password: String) : AuthScreenEvents()
-    data class OnRegister(val createUserDto: CreateUserDto) : AuthScreenEvents()
+    data class OnRegister(val imageUri: Uri?, val createUserDto: CreateUserDto) : AuthScreenEvents()
 }
 
 sealed class ResultEvents {
