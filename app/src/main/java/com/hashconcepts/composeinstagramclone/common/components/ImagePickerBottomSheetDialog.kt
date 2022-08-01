@@ -55,7 +55,7 @@ fun SheetContent(onPickerOptionClicked: (String) -> Unit) {
                     .size(70.dp)
                     .clickable { onPickerOptionClicked(Constants.GALLERY) }
             ) {
-                Icon(imageVector = Icons.Filled.Image, contentDescription = null,)
+                Icon(imageVector = Icons.Filled.Image, contentDescription = null, tint = Color(0xFFB2F0CC))
             }
 
             Spacer(modifier = Modifier.height(5.dp))
@@ -72,7 +72,7 @@ fun SheetContent(onPickerOptionClicked: (String) -> Unit) {
                     .size(70.dp)
                     .clickable { onPickerOptionClicked(Constants.CAMERA) }
             ) {
-                Icon(imageVector = Icons.Filled.Camera, contentDescription = null,)
+                Icon(imageVector = Icons.Filled.Camera, contentDescription = null, tint = Color(0xFFFFE2C6))
             }
 
             Spacer(modifier = Modifier.height(5.dp))
