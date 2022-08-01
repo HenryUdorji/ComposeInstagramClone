@@ -2,15 +2,10 @@ package com.hashconcepts.composeinstagramclone.auth.presentation
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Camera
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +21,6 @@ import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.LoginScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.*
-import com.hashconcepts.composeinstagramclone.common.utils.Constants
 import com.hashconcepts.composeinstagramclone.ui.theme.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -50,7 +44,8 @@ fun RegisterScreen(
 ) {
     val darkTheme: Boolean = isSystemInDarkTheme()
     val scaffoldState = rememberScaffoldState()
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     var imageUri by remember { mutableStateOf<Uri?>(null) }
 
@@ -133,9 +128,16 @@ fun RegisterScreen(
 
     }
 
-    ImagePickerPermission(coroutineScope, bottomSheetState) { uri ->
-        imageUri = uri
-    }
+    ImagePickerPermissionChecker(
+        coroutineScope,
+        bottomSheetState,
+        onCameraLaunchResult = { uri ->
+            imageUri = uri
+        },
+        onGalleryLaunchResult = { uri ->
+            imageUri = uri
+        }
+    )
 }
 
 @Composable
