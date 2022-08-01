@@ -1,23 +1,26 @@
 package com.hashconcepts.composeinstagramclone.auth.presentation
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BrowseGallery
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.*
 import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
@@ -27,9 +30,9 @@ import com.hashconcepts.composeinstagramclone.common.utils.Constants
 import com.hashconcepts.composeinstagramclone.ui.theme.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * @created 29/07/2022 - 11:04 PM
@@ -49,6 +52,7 @@ fun RegisterScreen(
     val scaffoldState = rememberScaffoldState()
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
 
     LaunchedEffect(key1 = true) {
         viewModel.eventChannelFlow.collectLatest { events ->
@@ -93,92 +97,11 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .align(Alignment.Center)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_user),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .border(
-                            width = 2.dp,
-                            color = if (darkTheme) IconDark else IconLight,
-                            shape = CircleShape
-                        )
-                        .padding(20.dp)
-                        .size(90.dp)
-                        .clickable {
-                            coroutineScope.launch {
-                                bottomSheetState.show()
-                            }
-                        }
-                )
+                ImageSection(darkTheme, imageUri, coroutineScope, bottomSheetState)
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                var email by remember { mutableStateOf("") }
-                var fullName by remember { mutableStateOf("") }
-                var username by remember { mutableStateOf("") }
-                var password by remember { mutableStateOf("") }
-
-                CustomFormTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    hint = "Email",
-                    keyboardType = KeyboardType.Email,
-                    value = email,
-                    onValueChange = { email = it }
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                CustomFormTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    hint = "Full Name",
-                    value = fullName,
-                    onValueChange = { fullName = it }
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                CustomFormTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    hint = "Username",
-                    value = username,
-                    onValueChange = { username = it }
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                CustomFormTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    visualTransformation = PasswordVisualTransformation(),
-                    hint = "Password",
-                    value = password,
-                    onValueChange = { password = it }
-                )
-
-                Spacer(modifier = Modifier.height(30.dp))
-
-                CustomRaisedButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    text = "Sign up",
-                    isLoading = viewModel.isLoading
-                ) {
-                    val createUserDto = CreateUserDto(
-                        email = email,
-                        fullName = fullName,
-                        username = username,
-                        password = password,
-                    )
-                    viewModel.onUserEvents(AuthScreenEvents.OnRegister(null, createUserDto))
-                }
+                FormSection(imageUri, viewModel)
 
                 Spacer(modifier = Modifier.height(38.dp))
 
@@ -205,92 +128,154 @@ fun RegisterScreen(
                 }
             }
 
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(LineColor)
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 40.dp)
-                ) {
-                    Text(
-                        text = "Instagram from Meta",
-                        style = MaterialTheme.typography.button,
-                        color = LightGray,
-                    )
-                }
-            }
+            BottomSection()
         }
 
+    }
 
-        val storagePermission = rememberPermissionState(permission = android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        val cameraPermission = rememberPermissionState(permission = android.Manifest.permission.CAMERA)
-        val showPermissionRationale = remember { mutableStateOf(ShowRationale()) }
+    ImagePickerPermission(coroutineScope, bottomSheetState) { uri ->
+        imageUri = uri
+    }
+}
 
-        ImagePickerBottomSheetDialog(bottomSheetState = bottomSheetState) { option ->
-            when (option) {
-                Constants.GALLERY -> {
-                    coroutineScope.launch { bottomSheetState.hide() }
+@Composable
+fun BoxScope.BottomSection() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter)
+    ) {
 
-                    if (storagePermission.status.isGranted) {
-                        //Open Gallery
-                    } else if (storagePermission.status.shouldShowRationale) {
-                        showPermissionRationale.value = showPermissionRationale.value.copy(
-                            showDialog = true,
-                            message = "InstagramClone Requires this Storage permission to access images in your phones Gallery.",
-                            imageVector = Icons.Filled.Image,
-                            permission = Constants.GALLERY
-                        )
-                    } else {
-                        storagePermission.launchPermissionRequest()
-                    }
-                }
-                Constants.CAMERA -> {
-                    coroutineScope.launch { bottomSheetState.hide() }
+        Box(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(LineColor)
+        )
 
-                    if (cameraPermission.status.isGranted) {
-                        //Open Camera
-                    } else if (cameraPermission.status.shouldShowRationale) {
-                        showPermissionRationale.value = showPermissionRationale.value.copy(
-                            showDialog = true,
-                            message = "InstagramClone Requires this Camera permission to access your phones Camera.",
-                            imageVector = Icons.Filled.Camera,
-                            permission = Constants.CAMERA
-                        )
-                    } else {
-                        cameraPermission.launchPermissionRequest()
-                    }
-                }
-            }
-        }
+        Spacer(modifier = Modifier.height(18.dp))
 
-        if (showPermissionRationale.value.showDialog) {
-            PermissionRationaleDialog(
-                message = showPermissionRationale.value.message,
-                imageVector = showPermissionRationale.value.imageVector!!,
-                onRequestPermission = {
-                    showPermissionRationale.value = showPermissionRationale.value.copy(showDialog = false)
-                    when(showPermissionRationale.value.permission) {
-                        Constants.GALLERY -> storagePermission.launchPermissionRequest()
-                        Constants.CAMERA -> cameraPermission.launchPermissionRequest()
-                    }
-                },
-                onDismissRequest = { showPermissionRationale.value = showPermissionRationale.value.copy(showDialog = false) }
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 40.dp)
+        ) {
+            Text(
+                text = "Instagram from Meta",
+                style = MaterialTheme.typography.button,
+                color = LightGray,
             )
         }
+    }
+}
+
+@Composable
+fun FormSection(imageUri: Uri?, viewModel: AuthViewModel) {
+    var email by remember { mutableStateOf("") }
+    var fullName by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    CustomFormTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        hint = "Email",
+        keyboardType = KeyboardType.Email,
+        value = email,
+        onValueChange = { email = it }
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    CustomFormTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        hint = "Full Name",
+        value = fullName,
+        onValueChange = { fullName = it }
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    CustomFormTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        hint = "Username",
+        value = username,
+        onValueChange = { username = it }
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    CustomFormTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        visualTransformation = PasswordVisualTransformation(),
+        hint = "Password",
+        value = password,
+        onValueChange = { password = it }
+    )
+
+    Spacer(modifier = Modifier.height(30.dp))
+
+    CustomRaisedButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        text = "Sign up",
+        isLoading = viewModel.isLoading
+    ) {
+        val createUserDto = CreateUserDto(
+            email = email,
+            fullName = fullName,
+            username = username,
+            password = password,
+        )
+        viewModel.onUserEvents(
+            AuthScreenEvents.OnRegister(
+                imageUri = imageUri,
+                createUserDto
+            )
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ImageSection(
+    darkTheme: Boolean,
+    imageUri: Uri?,
+    coroutineScope: CoroutineScope,
+    bottomSheetState: ModalBottomSheetState
+) {
+    Box(
+        contentAlignment = Alignment.Center, modifier = Modifier
+            .border(
+                width = 2.dp,
+                color = if (darkTheme) IconDark else IconLight,
+                shape = CircleShape
+            )
+            .padding(10.dp)
+            .size(90.dp)
+    ) {
+        Image(
+            painter = if (imageUri == null) {
+                painterResource(id = R.drawable.ic_user)
+            } else rememberAsyncImagePainter(model = Uri.parse(imageUri.toString())),
+            contentDescription = null,
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable {
+                    coroutineScope.launch {
+                        bottomSheetState.show()
+                    }
+                }
+        )
+
     }
 }
