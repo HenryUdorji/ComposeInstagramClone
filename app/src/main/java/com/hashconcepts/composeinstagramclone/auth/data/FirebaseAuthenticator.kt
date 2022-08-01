@@ -12,6 +12,7 @@ import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 import com.hashconcepts.composeinstagramclone.auth.domain.Authenticator
 import com.hashconcepts.composeinstagramclone.common.utils.Constants
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.io.File
 
 /**
@@ -25,6 +26,7 @@ class FirebaseAuthenticator : Authenticator {
         password: String
     ): FirebaseUser? {
         Firebase.auth.createUserWithEmailAndPassword(email, password).await()
+        Firebase.auth.currentUser?.sendEmailVerification()?.await()
         return Firebase.auth.currentUser
     }
 

@@ -272,6 +272,7 @@ fun ImageSection(
             contentDescription = null,
             modifier = Modifier
                 .clip(CircleShape)
+                .size(90.dp)
                 .clickable {
                     coroutineScope.launch {
                         bottomSheetState.show()

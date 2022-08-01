@@ -14,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -80,7 +81,7 @@ class AuthViewModel @Inject constructor(
             }
 
             isLoading = false
-            eventChannel.send(ResultEvents.OnSuccess("User created successfully."))
+            eventChannel.send(ResultEvents.OnSuccess("User created, kindly check your email to verify"))
         } catch (e: Exception) {
             isLoading = false
             eventChannel.send(

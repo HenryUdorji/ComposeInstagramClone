@@ -26,5 +26,4 @@ interface Authenticator {
     suspend fun saveUserProfile(createUserDto: CreateUserDto)
 
     suspend fun uploadUserProfile(imageUri: Uri): String
-
 }
