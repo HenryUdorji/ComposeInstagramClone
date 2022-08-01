@@ -25,6 +25,6 @@ interface AuthRepository {
 
     suspend fun saveUserProfile(createUserDto: CreateUserDto): Boolean
 
-    suspend fun uploadUserProfile(imageUri: Uri): String
+    suspend fun uploadProfileImage(imageUri: Uri): String
 
 }

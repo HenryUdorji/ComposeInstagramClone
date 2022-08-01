@@ -12,6 +12,7 @@ import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 import com.hashconcepts.composeinstagramclone.auth.domain.Authenticator
 import com.hashconcepts.composeinstagramclone.common.utils.Constants
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 /**
  * @created 30/07/2022 - 3:36 AM
@@ -61,9 +62,8 @@ class FirebaseAuthenticator : Authenticator {
 
     override suspend fun uploadUserProfile(imageUri: Uri): String {
         val uploadTask = Firebase.storage.reference
-            .child(Constants.PROFILE_IMAGE_STORAGE_REF)
-            .putFile(imageUri)
-            .await()
+            .child("${Constants.PROFILE_IMAGE_STORAGE_REF}/image_${System.currentTimeMillis()}")
+            .putFile(Uri.parse(imageUri.toString())).await()
 
         return uploadTask.storage.downloadUrl.await().toString()
     }

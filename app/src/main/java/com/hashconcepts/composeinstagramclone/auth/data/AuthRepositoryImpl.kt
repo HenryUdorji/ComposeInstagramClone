@@ -51,7 +51,7 @@ class AuthRepositoryImpl @Inject constructor(
         return true
     }
 
-    override suspend fun uploadUserProfile(imageUri: Uri): String {
+    override suspend fun uploadProfileImage(imageUri: Uri): String {
         return authenticator.uploadUserProfile(imageUri)
     }
 }

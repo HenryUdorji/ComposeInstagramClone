@@ -68,12 +68,13 @@ class AuthViewModel @Inject constructor(
                 createUserDto.password
             )
             firebaseUser?.let { user ->
-                val imageUrl = authRepository.uploadUserProfile(imageUri)
+                val imageUrl = authRepository.uploadProfileImage(imageUri)
 
                 val updatedUser = createUserDto.copy(
                     uid = user.uid,
                     createdDate = FieldValue.serverTimestamp(),
-                    imageUrl = imageUrl
+                    imageUrl = imageUrl,
+                    password = "",
                 )
                 authRepository.saveUserProfile(updatedUser)
             }
