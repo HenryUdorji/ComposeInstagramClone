@@ -8,6 +8,11 @@ Login Screen (Dark Mode)   | Login Screen (Light)
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="screenshots/login_dark.png" width=300 height=667/>            |  <img src="screenshots/login_light.png" width=300 height=667/>  |
 
+Login Screen (Dark Mode)   | Login Screen (Light)     
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="screenshots/login_dak.png" width=300 height=667/>            |  <img src="screenshots/login_ligt.png" width=300 height=667/>  |
+
+
 
 ## Tech Stack.
 - [Kotlin](https://developer.android.com/kotlin) - Kotlin is a programming language that can run on JVM. Google has announced Kotlin as one of its officially supported programming languages in Android Studio; and the Android community is migrating at a pace from Java to Kotlin.
