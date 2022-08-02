@@ -279,6 +279,5 @@ fun ImageSection(
                     }
                 }
         )
-
     }
 }

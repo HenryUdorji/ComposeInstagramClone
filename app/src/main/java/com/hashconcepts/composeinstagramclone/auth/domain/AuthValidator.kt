@@ -62,9 +62,38 @@ object AuthValidator {
                 error = "Password length should be at least 6 characters."
             )
         }
-        return ValidationResult(
-            successful = true,
-            error = "User created successfully"
-        )
+        return ValidationResult(successful = true,)
+    }
+
+    fun validateSignInRequest(email: String, password: String): ValidationResult {
+        if (password.isBlank() && email.isBlank()) {
+            return ValidationResult(
+                successful = false,
+                error = "Email and Password fields are empty"
+            )
+        }
+        if (email.isBlank()) {
+            return ValidationResult(
+                successful = false,
+                error = "Email cannot be blank"
+            )
+        }
+        if (email.isNotBlank()) {
+            val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
+            val matches = EMAIL_REGEX.toRegex().matches(email)
+            if (!matches) {
+                return ValidationResult(
+                    successful = false,
+                    error = "Email is not valid"
+                )
+            }
+        }
+        if (password.isBlank()) {
+            return ValidationResult(
+                successful = false,
+                error = "Password cannot be blank"
+            )
+        }
+        return ValidationResult(successful = true,)
     }
 }

@@ -38,7 +38,17 @@ class AuthViewModel @Inject constructor(
     fun onUserEvents(authScreenEvents: AuthScreenEvents) {
         when (authScreenEvents) {
             is AuthScreenEvents.OnLogin -> {
+                val email = authScreenEvents.email
+                val password = authScreenEvents.password
 
+                val result = AuthValidator.validateSignInRequest(email, password)
+                if (result.successful) {
+                    signIn(email, password)
+                } else {
+                    viewModelScope.launch {
+                        eventChannel.send(ResultEvents.OnError(result.error!!))
+                    }
+                }
             }
             is AuthScreenEvents.OnRegister -> {
                 if (authScreenEvents.imageUri == null) {
@@ -89,6 +99,25 @@ class AuthViewModel @Inject constructor(
                     e.localizedMessage ?: "Unable to Create User, try again."
                 )
             )
+        }
+    }
+
+    private fun signIn(email: String, password: String) = viewModelScope.launch {
+        isLoading = true
+        try {
+            val firebaseUser = authRepository.signInWithEmailAndPassword(email, password)
+            isLoading = false
+
+            firebaseUser?.let { user ->
+                if (user.isEmailVerified) {
+                    eventChannel.send(ResultEvents.OnSuccess("Login successful"))
+                } else {
+                    eventChannel.send(ResultEvents.OnError("User email is not verified. Kindly verify to login"))
+                }
+            }
+        } catch (e: Exception) {
+            isLoading = false
+            eventChannel.send(ResultEvents.OnError(e.localizedMessage ?: "Unable to Login User, try again."))
         }
     }
 }
