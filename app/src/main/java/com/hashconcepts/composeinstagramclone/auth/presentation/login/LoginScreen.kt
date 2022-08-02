@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation
+package com.hashconcepts.composeinstagramclone.auth.presentation.login
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hashconcepts.composeinstagramclone.R
+import com.hashconcepts.composeinstagramclone.auth.presentation.AuthScreenEvents
+import com.hashconcepts.composeinstagramclone.auth.presentation.AuthViewModel
+import com.hashconcepts.composeinstagramclone.auth.presentation.ResultEvents
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.CustomFormTextField
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
@@ -243,10 +246,12 @@ fun ColumnScope.FormSection(viewModel: AuthViewModel) {
         text = "Log in",
         isLoading = viewModel.isLoading
     ) {
-        viewModel.onUserEvents(AuthScreenEvents.OnLogin(
-            email = email,
-            password = password,
-        ))
+        viewModel.onUserEvents(
+            AuthScreenEvents.OnLogin(
+                email = email,
+                password = password,
+            )
+        )
     }
 
     Spacer(modifier = Modifier.height(38.dp))
