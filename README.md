@@ -4,7 +4,7 @@ Android Instagram clone built with Jetpack Compose
 
 ## ScreenShots
 
-Login Screen (Dark Mode)            | Login Screen (Light)     | 
+Login Screen (Dark Mode)   | Login Screen (Light)     
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="screenshots/login_dark.png"/>            |  <img src="screenshots/login_light.png"/>  |
 
