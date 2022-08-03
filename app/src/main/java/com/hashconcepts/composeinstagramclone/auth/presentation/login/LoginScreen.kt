@@ -160,7 +160,6 @@ fun SignUpSection(onSignUpClicked: () -> Unit) {
         Text(
             text = "OR",
             style = MaterialTheme.typography.body1,
-            fontSize = 12.sp,
             color = LightGray,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f)
