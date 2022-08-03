@@ -34,6 +34,10 @@ class AuthViewModel @Inject constructor(
     var isLoading by mutableStateOf(false)
         private set
 
+    init {
+        getUser()
+    }
+
 
     fun onUserEvents(authScreenEvents: AuthScreenEvents) {
         when (authScreenEvents) {
@@ -150,4 +154,6 @@ class AuthViewModel @Inject constructor(
             eventChannel.send(ResultEvents.OnError(e.localizedMessage ?: "Unable to send reset email, try again."))
         }
     }
+
+    private fun getUser() = authRepository.getUser()
 }

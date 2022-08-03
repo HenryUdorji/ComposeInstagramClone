@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.LoginScreenDestination
@@ -36,7 +37,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination
 @Composable
 fun AuthWelcomeScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
