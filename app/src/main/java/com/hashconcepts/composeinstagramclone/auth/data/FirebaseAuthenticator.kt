@@ -38,6 +38,17 @@ class FirebaseAuthenticator : Authenticator {
         return Firebase.auth.currentUser
     }
 
+    override suspend fun checkUsernameAvailability(username: String): Boolean {
+        val querySnapshot = Firebase.firestore.collection(Constants.USERS_COLLECTION)
+            .whereEqualTo("username", username)
+            .get()
+            .await()
+
+        return querySnapshot.documents
+            .map { it.getString("username") }
+            .none { it.equals(username, true) }
+    }
+
     override fun signOut(): FirebaseUser? {
         Firebase.auth.signOut()
         return Firebase.auth.currentUser

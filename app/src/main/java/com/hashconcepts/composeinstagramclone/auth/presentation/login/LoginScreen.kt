@@ -248,8 +248,8 @@ fun ColumnScope.FormSection(viewModel: AuthViewModel) {
     ) {
         viewModel.onUserEvents(
             AuthScreenEvents.OnLogin(
-                email = email,
-                password = password,
+                email = email.trim(),
+                password = password.trim(),
             )
         )
     }
