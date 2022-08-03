@@ -67,9 +67,19 @@ class AuthViewModel @Inject constructor(
                     }
                 }
             }
+            is AuthScreenEvents.OnForgotPassword -> {
+                val email = authScreenEvents.email
+                if (email.isBlank()) {
+                    viewModelScope.launch {
+                        eventChannel.send(ResultEvents.OnError("Email field should not be empty."))
+                    }
+                    return
+                }
+
+                forgotPassword(email)
+            }
         }
     }
-
 
     private fun createUser(imageUri: Uri, createUserDto: CreateUserDto) = viewModelScope.launch {
         isLoading = true
@@ -124,6 +134,20 @@ class AuthViewModel @Inject constructor(
         } catch (e: Exception) {
             isLoading = false
             eventChannel.send(ResultEvents.OnError(e.localizedMessage ?: "Unable to Login User, try again."))
+        }
+    }
+
+    private fun forgotPassword(email: String) = viewModelScope.launch {
+        isLoading = true
+        try {
+            val emailSent = authRepository.sendPasswordResetEmail(email)
+            if (emailSent) {
+                isLoading = false
+                eventChannel.send(ResultEvents.OnError("Email sent successfully, check your mail to continue."))
+            }
+        } catch (e: Exception) {
+            isLoading = false
+            eventChannel.send(ResultEvents.OnError(e.localizedMessage ?: "Unable to send reset email, try again."))
         }
     }
 }
