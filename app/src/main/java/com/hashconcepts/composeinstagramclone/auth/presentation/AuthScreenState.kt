@@ -15,6 +15,7 @@ data class AuthScreenState(
 sealed class AuthScreenEvents {
     data class OnLogin(val email: String, val password: String) : AuthScreenEvents()
     data class OnRegister(val imageUri: Uri?, val createUserDto: CreateUserDto) : AuthScreenEvents()
+    data class OnForgotPassword(val email: String): AuthScreenEvents()
 }
 
 sealed class ResultEvents {

@@ -67,6 +67,9 @@ class AuthViewModel @Inject constructor(
                     }
                 }
             }
+            is AuthScreenEvents.OnForgotPassword -> {
+
+            }
         }
     }
 

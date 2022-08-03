@@ -1,18 +1,21 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation.login
+package com.hashconcepts.composeinstagramclone.auth.presentation.forgotpassword
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockReset
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,19 +24,17 @@ import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.auth.presentation.AuthScreenEvents
 import com.hashconcepts.composeinstagramclone.auth.presentation.AuthViewModel
 import com.hashconcepts.composeinstagramclone.auth.presentation.ResultEvents
-import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.ForgotPasswordScreenDestination
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.CustomFormTextField
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
-import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
-import com.hashconcepts.composeinstagramclone.ui.theme.LightGray
-import com.hashconcepts.composeinstagramclone.ui.theme.LineColor
+import com.hashconcepts.composeinstagramclone.ui.theme.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 /**
- * @created 29/07/2022 - 11:04 PM
+ * @created 03/08/2022 - 6:01 AM
  * @project ComposeInstagramClone
  * @author  ifechukwu.udorji
  */
@@ -41,11 +42,11 @@ import kotlinx.coroutines.flow.collectLatest
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
-fun LoginScreen(
+fun ForgotPasswordScreen(
     navigator: DestinationsNavigator,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-
+    val darkTheme: Boolean = isSystemInDarkTheme()
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
@@ -62,6 +63,8 @@ fun LoginScreen(
                         message = events.message!!,
                         duration = SnackbarDuration.Short
                     )
+                    delay(500)
+                    navigator.navigateUp()
                 }
             }
         }
@@ -89,52 +92,17 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .align(Alignment.Center)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_instagram_logo),
-                    contentDescription = null,
-                )
+                IconSection(darkTheme)
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-                FormSection(viewModel) {
-                    navigator.navigate(ForgotPasswordScreenDestination)
-                }
+                FormSection(viewModel)
 
                 Spacer(modifier = Modifier.height(40.dp))
 
                 SignUpSection {
                     navigator.popBackStack()
                     navigator.navigate(RegisterScreenDestination)
-                }
-            }
-
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(LineColor)
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 40.dp)
-                ) {
-                    Text(
-                        text = "Instagram from Meta",
-                        style = MaterialTheme.typography.button,
-                        color = LightGray,
-                    )
                 }
             }
         }
@@ -176,98 +144,78 @@ fun SignUpSection(onSignUpClicked: () -> Unit) {
 
     Spacer(modifier = Modifier.height(40.dp))
 
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 40.dp)
-    ) {
-        Text(
-            text = "Don't have an account?",
-            style = MaterialTheme.typography.button,
-            color = LightGray,
-        )
-        Spacer(modifier = Modifier.width(5.dp))
-        Text(
-            text = "Sign up",
-            style = MaterialTheme.typography.button,
-            modifier = Modifier.clickable { onSignUpClicked() }
-        )
-    }
+    Text(
+        text = "Create New Account",
+        style = MaterialTheme.typography.button,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.clickable { onSignUpClicked() }
+    )
 }
 
-
 @Composable
-fun ColumnScope.FormSection(viewModel: AuthViewModel, onForgotPasswordClicked: () -> Unit) {
+fun FormSection(viewModel: AuthViewModel) {
+    Text(
+        text = "Trouble Logging In?",
+        style = MaterialTheme.typography.h2,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    Text(
+        text = "Enter your email and we'll send you a link to get back into your account.",
+        style = MaterialTheme.typography.body1,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    )
+
+    Spacer(modifier = Modifier.height(20.dp))
+
     var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     CustomFormTextField(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         hint = "Email",
-        value = email,
         keyboardType = KeyboardType.Email,
+        value = email,
         onValueChange = { email = it }
     )
 
-    Spacer(modifier = Modifier.height(12.dp))
-
-    CustomFormTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        visualTransformation = PasswordVisualTransformation(),
-        hint = "Password",
-        value = password,
-        onValueChange = { password = it }
-    )
-
     Spacer(modifier = Modifier.height(20.dp))
-
-    Text(
-        text = "Forgot password?",
-        style = MaterialTheme.typography.body1,
-        fontSize = 12.sp,
-        color = AccentColor,
-        textAlign = TextAlign.End,
-        modifier = Modifier
-            .padding(end = 16.dp)
-            .align(Alignment.End)
-            .clickable { onForgotPasswordClicked() }
-    )
-
-    Spacer(modifier = Modifier.height(30.dp))
 
     CustomRaisedButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        text = "Log in",
+        text = "Send Reset Email",
         isLoading = viewModel.isLoading
     ) {
-        viewModel.onUserEvents(
-            AuthScreenEvents.OnLogin(
-                email = email.trim(),
-                password = password.trim(),
-            )
-        )
+        viewModel.onUserEvents(AuthScreenEvents.OnForgotPassword(email))
     }
+}
 
-    Spacer(modifier = Modifier.height(38.dp))
-
-    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+@Composable
+fun IconSection(darkTheme: Boolean) {
+    Box(
+        contentAlignment = Alignment.Center, modifier = Modifier
+            .border(
+                width = 2.dp,
+                color = if (darkTheme) IconDark else IconLight,
+                shape = CircleShape
+            )
+            .padding(10.dp)
+            .size(90.dp)
+    ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_facebook),
+            imageVector = Icons.Outlined.Lock,
             contentDescription = null,
-            tint = Color.Unspecified
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = "Log in with Facebook",
-            style = MaterialTheme.typography.body1,
-            color = AccentColor
+            modifier = Modifier.size(80.dp),
+            tint = if (darkTheme) IconDark else IconLight,
         )
     }
 }
