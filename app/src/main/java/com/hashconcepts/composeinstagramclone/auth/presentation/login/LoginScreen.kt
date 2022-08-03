@@ -61,8 +61,6 @@ fun LoginScreen(
                         message = events.message!!,
                         duration = SnackbarDuration.Short
                     )
-
-                    //navigator.navigate()
                 }
             }
         }
