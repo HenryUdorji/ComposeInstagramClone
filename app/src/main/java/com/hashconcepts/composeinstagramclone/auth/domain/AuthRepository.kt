@@ -15,6 +15,8 @@ interface AuthRepository {
 
     suspend fun signInWithEmailAndPassword(email: String , password: String): FirebaseUser?
 
+    suspend fun checkUsernameAvailability(username: String): Boolean
+
     fun signOut() : FirebaseUser?
 
     fun getUser() : FirebaseUser?
