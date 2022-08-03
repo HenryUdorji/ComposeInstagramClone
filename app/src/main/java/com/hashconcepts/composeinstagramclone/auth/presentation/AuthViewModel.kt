@@ -74,24 +74,30 @@ class AuthViewModel @Inject constructor(
     private fun createUser(imageUri: Uri, createUserDto: CreateUserDto) = viewModelScope.launch {
         isLoading = true
         try {
-            val firebaseUser = authRepository.createUserWithEmailAndPassword(
-                createUserDto.email,
-                createUserDto.password
-            )
-            firebaseUser?.let { user ->
-                val imageUrl = authRepository.uploadProfileImage(imageUri)
-
-                val updatedUser = createUserDto.copy(
-                    uid = user.uid,
-                    createdDate = FieldValue.serverTimestamp(),
-                    imageUrl = imageUrl,
-                    password = "",
+            val usernameAvailability = authRepository.checkUsernameAvailability(createUserDto.username)
+            if (!usernameAvailability) {
+                isLoading = false
+                eventChannel.send(ResultEvents.OnError("Username entered already exist, try another one."))
+            } else {
+                val firebaseUser = authRepository.createUserWithEmailAndPassword(
+                    createUserDto.email,
+                    createUserDto.password
                 )
-                authRepository.saveUserProfile(updatedUser)
-            }
+                firebaseUser?.let { user ->
+                    val imageUrl = authRepository.uploadProfileImage(imageUri)
 
-            isLoading = false
-            eventChannel.send(ResultEvents.OnSuccess("User created, kindly check your email to verify"))
+                    val updatedUser = createUserDto.copy(
+                        uid = user.uid,
+                        createdDate = FieldValue.serverTimestamp(),
+                        imageUrl = imageUrl,
+                        password = "",
+                    )
+                    authRepository.saveUserProfile(updatedUser)
+                }
+
+                isLoading = false
+                eventChannel.send(ResultEvents.OnSuccess("User created, kindly check your email to verify"))
+            }
         } catch (e: Exception) {
             isLoading = false
             eventChannel.send(

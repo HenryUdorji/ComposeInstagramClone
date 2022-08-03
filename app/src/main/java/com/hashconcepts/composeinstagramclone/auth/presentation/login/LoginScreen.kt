@@ -61,8 +61,6 @@ fun LoginScreen(
                         message = events.message!!,
                         duration = SnackbarDuration.Short
                     )
-
-                    //navigator.navigate()
                 }
             }
         }
@@ -248,8 +246,8 @@ fun ColumnScope.FormSection(viewModel: AuthViewModel) {
     ) {
         viewModel.onUserEvents(
             AuthScreenEvents.OnLogin(
-                email = email,
-                password = password,
+                email = email.trim(),
+                password = password.trim(),
             )
         )
     }

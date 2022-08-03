@@ -29,6 +29,10 @@ class AuthRepositoryImpl @Inject constructor(
         return authenticator.signInWithEmailAndPassword(email, password)
     }
 
+    override suspend fun checkUsernameAvailability(username: String): Boolean {
+        return authenticator.checkUsernameAvailability(username)
+    }
+
     override fun signOut(): FirebaseUser? {
         return authenticator.signOut()
     }

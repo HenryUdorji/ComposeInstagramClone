@@ -1,0 +1,72 @@
+name: InstagramClone Builder
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+      - 'development'
+
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Change Wrapper Permissions
+        run: chmod +x ./gradlew
+
+      # Execute gradle build command with stacktrace flag
+      - name: Build with gradle
+        run: ./gradlew build --stacktrace # Execute gradle script to build project
+
+
+  lint-check:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Change Wrapper Permissions
+        run: chmod +x ./gradlew
+
+      - name: Lint check
+        run: ./gradlew lint
+
+      - name: Generate lint report
+        uses: actions/upload-artifact@v2
+        with:
+          name: lint_report.html
+          path: app/build/reports/lint-result-debug.html
+
+
+  unit-test:
+    name: Unit Test
+    needs: [lint-check]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Change Wrapper Permissions
+        run: chmod +x ./gradlew
+
+      - name: Execute unit test
+        run: ./gradlew test --stacktrace
+
+      - name: Generate test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: test_report.html
+          path: app/build/reports/test/test-result-debug.html

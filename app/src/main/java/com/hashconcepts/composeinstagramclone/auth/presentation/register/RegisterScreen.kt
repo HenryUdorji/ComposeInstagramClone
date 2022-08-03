@@ -236,10 +236,10 @@ fun FormSection(imageUri: Uri?, viewModel: AuthViewModel) {
         isLoading = viewModel.isLoading
     ) {
         val createUserDto = CreateUserDto(
-            email = email,
+            email = email.trim(),
             fullName = fullName,
-            username = username,
-            password = password,
+            username = username.trim(),
+            password = password.trim(),
         )
         viewModel.onUserEvents(
             AuthScreenEvents.OnRegister(
