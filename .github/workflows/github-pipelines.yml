@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@c2
+        uses: actions/checkout@v2
 
       - name: Lint check
         run: ./gradlew lint
