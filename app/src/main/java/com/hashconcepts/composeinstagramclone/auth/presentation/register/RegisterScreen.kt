@@ -19,10 +19,10 @@ import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.*
 import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.auth.domain.model.User
-import com.hashconcepts.composeinstagramclone.auth.presentation.AuthScreenEvents
-import com.hashconcepts.composeinstagramclone.auth.presentation.AuthViewModel
-import com.hashconcepts.composeinstagramclone.auth.presentation.ResultEvents
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.LoginScreenDestination
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthScreenEvents
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthViewModel
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.ResultEvents
 import com.hashconcepts.composeinstagramclone.common.components.*
 import com.hashconcepts.composeinstagramclone.ui.theme.*
 import com.ramcosta.composedestinations.annotation.Destination

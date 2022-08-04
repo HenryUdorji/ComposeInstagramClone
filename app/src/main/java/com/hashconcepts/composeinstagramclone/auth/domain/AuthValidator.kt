@@ -1,7 +1,7 @@
 package com.hashconcepts.composeinstagramclone.auth.domain
 
 import com.hashconcepts.composeinstagramclone.auth.domain.model.User
-import com.hashconcepts.composeinstagramclone.auth.presentation.ValidationResult
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.ValidationResult
 
 /**
  * @created 31/07/2022 - 7:25 PM
