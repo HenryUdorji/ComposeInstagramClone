@@ -6,10 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.FieldValue
-import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 import com.hashconcepts.composeinstagramclone.auth.domain.AuthRepository
 import com.hashconcepts.composeinstagramclone.auth.domain.AuthValidator
+import com.hashconcepts.composeinstagramclone.auth.domain.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -30,8 +29,15 @@ class AuthViewModel @Inject constructor(
     private val eventChannel = Channel<ResultEvents>()
     val eventChannelFlow = eventChannel.receiveAsFlow()
 
+    var userState by mutableStateOf(User())
+        private set
+
     var isLoading by mutableStateOf(false)
         private set
+
+    init {
+        getUser()
+    }
 
 
     fun onUserEvents(authScreenEvents: AuthScreenEvents) {
@@ -57,9 +63,9 @@ class AuthViewModel @Inject constructor(
                     return
                 }
 
-                val result = AuthValidator.validateCreateUserRequest(authScreenEvents.createUserDto)
+                val result = AuthValidator.validateCreateUserRequest(authScreenEvents.user)
                 if (result.successful) {
-                    createUser(authScreenEvents.imageUri, authScreenEvents.createUserDto)
+                    createUser(authScreenEvents.imageUri, authScreenEvents.user)
                 } else {
                     viewModelScope.launch {
                         eventChannel.send(ResultEvents.OnError(result.error!!))
@@ -80,24 +86,23 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private fun createUser(imageUri: Uri, createUserDto: CreateUserDto) = viewModelScope.launch {
+    private fun createUser(imageUri: Uri, user: User) = viewModelScope.launch {
         isLoading = true
         try {
-            val usernameAvailability = authRepository.checkUsernameAvailability(createUserDto.username)
+            val usernameAvailability = authRepository.checkUsernameAvailability(user.username)
             if (!usernameAvailability) {
                 isLoading = false
                 eventChannel.send(ResultEvents.OnError("Username entered already exist, try another one."))
             } else {
                 val firebaseUser = authRepository.createUserWithEmailAndPassword(
-                    createUserDto.email,
-                    createUserDto.password
+                    user.email,
+                    user.password
                 )
-                firebaseUser?.let { user ->
+                firebaseUser?.let { fireUser ->
                     val imageUrl = authRepository.uploadProfileImage(imageUri)
 
-                    val updatedUser = createUserDto.copy(
-                        uid = user.uid,
-                        createdDate = FieldValue.serverTimestamp(),
+                    val updatedUser = user.copy(
+                        uid = fireUser.uid,
                         imageUrl = imageUrl,
                         password = "",
                     )
@@ -156,5 +161,10 @@ class AuthViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    private fun getUser() = viewModelScope.launch {
+        val user = authRepository.getUser()
+        userState = userState.copy(email = user?.email ?: "", imageUrl = user?.imageUrl ?: "")
     }
 }

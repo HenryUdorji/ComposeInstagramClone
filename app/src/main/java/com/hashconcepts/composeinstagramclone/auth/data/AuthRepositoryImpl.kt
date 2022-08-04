@@ -2,9 +2,9 @@ package com.hashconcepts.composeinstagramclone.auth.data
 
 import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
-import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 import com.hashconcepts.composeinstagramclone.auth.domain.AuthRepository
 import com.hashconcepts.composeinstagramclone.auth.domain.Authenticator
+import com.hashconcepts.composeinstagramclone.auth.domain.model.User
 import javax.inject.Inject
 
 /**
@@ -37,7 +37,7 @@ class AuthRepositoryImpl @Inject constructor(
         return authenticator.signOut()
     }
 
-    override fun getUser(): FirebaseUser? {
+    override suspend fun getUser(): User? {
         return authenticator.getUser()
     }
 
@@ -50,8 +50,8 @@ class AuthRepositoryImpl @Inject constructor(
         return authenticator.verifyPasswordResetCode(code)
     }
 
-    override suspend fun saveUserProfile(createUserDto: CreateUserDto): Boolean {
-        authenticator.saveUserProfile(createUserDto)
+    override suspend fun saveUserProfile(user: User): Boolean {
+        authenticator.saveUserProfile(user)
         return true
     }
 

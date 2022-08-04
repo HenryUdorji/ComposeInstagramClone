@@ -1,7 +1,7 @@
 package com.hashconcepts.composeinstagramclone.auth.domain
 
 import com.google.common.truth.Truth.assertThat
-import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
+import com.hashconcepts.composeinstagramclone.auth.domain.model.User
 import org.junit.Test
 
 /**
@@ -13,61 +13,61 @@ class AuthValidatorTest {
 
     @Test
     fun validateCreateUserRequest_allFieldsEmpty_returnsFalse() {
-        val createUserDto = CreateUserDto(
+        val user = User(
             email = "",
             fullName = "",
             username = "",
             password = ""
         )
-        val result = AuthValidator.validateCreateUserRequest(createUserDto)
+        val result = AuthValidator.validateCreateUserRequest(user)
         assertThat(result.successful).isFalse()
     }
 
     @Test
     fun validateCreateUserRequest_oneFieldEmpty_returnsFalse() {
-        val createUserDto = CreateUserDto(
+        val user = User(
             email = "henryudorji@gmail.com",
             fullName = "",
             username = "Henry",
             password = "123456"
         )
-        val result = AuthValidator.validateCreateUserRequest(createUserDto)
+        val result = AuthValidator.validateCreateUserRequest(user)
         assertThat(result.successful).isFalse()
     }
 
     @Test
     fun validateCreateUserRequest_invalidEmail_returnsFalse() {
-        val createUserDto = CreateUserDto(
+        val user = User(
             email = "henryudorji@gmail",
             fullName = "Henry Ifechukwu",
             username = "Henry",
             password = "123456"
         )
-        val result = AuthValidator.validateCreateUserRequest(createUserDto)
+        val result = AuthValidator.validateCreateUserRequest(user)
         assertThat(result.successful).isFalse()
     }
 
     @Test
     fun validateCreateUserRequest_invalidPasswordLength_returnsFalse() {
-        val createUserDto = CreateUserDto(
+        val user = User(
             email = "henryudorji@gmail.com",
             fullName = "Henry Ifechukwu",
             username = "Henry",
             password = "123"
         )
-        val result = AuthValidator.validateCreateUserRequest(createUserDto)
+        val result = AuthValidator.validateCreateUserRequest(user)
         assertThat(result.successful).isFalse()
     }
 
     @Test
     fun validateCreateUserRequest_allFieldsValid_returnsTrue() {
-        val createUserDto = CreateUserDto(
+        val user = User(
             email = "henryudorji@gmail.com",
             fullName = "Henry Ifechukwu",
             username = "Henry",
             password = "123456"
         )
-        val result = AuthValidator.validateCreateUserRequest(createUserDto)
+        val result = AuthValidator.validateCreateUserRequest(user)
         assertThat(result.successful).isTrue()
     }
 }
