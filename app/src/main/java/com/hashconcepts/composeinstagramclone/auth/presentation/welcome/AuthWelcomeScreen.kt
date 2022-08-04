@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation
+package com.hashconcepts.composeinstagramclone.auth.presentation.welcome
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*

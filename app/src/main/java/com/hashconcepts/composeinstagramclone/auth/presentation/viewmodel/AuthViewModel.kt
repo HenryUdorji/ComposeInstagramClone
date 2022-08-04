@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation
+package com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel
 
 import android.net.Uri
 import androidx.compose.runtime.getValue
@@ -14,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -133,7 +132,11 @@ class AuthViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             isLoading = false
-            eventChannel.send(ResultEvents.OnError(e.localizedMessage ?: "Unable to Login User, try again."))
+            eventChannel.send(
+                ResultEvents.OnError(
+                    e.localizedMessage ?: "Unable to Login User, try again."
+                )
+            )
         }
     }
 
@@ -147,7 +150,11 @@ class AuthViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             isLoading = false
-            eventChannel.send(ResultEvents.OnError(e.localizedMessage ?: "Unable to send reset email, try again."))
+            eventChannel.send(
+                ResultEvents.OnError(
+                    e.localizedMessage ?: "Unable to send reset email, try again."
+                )
+            )
         }
     }
 }

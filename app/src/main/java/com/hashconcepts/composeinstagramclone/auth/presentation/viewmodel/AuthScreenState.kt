@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation
+package com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel
 
 import android.net.Uri
 import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto

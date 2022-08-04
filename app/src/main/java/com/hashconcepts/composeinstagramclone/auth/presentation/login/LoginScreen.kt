@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hashconcepts.composeinstagramclone.R
-import com.hashconcepts.composeinstagramclone.auth.presentation.AuthScreenEvents
-import com.hashconcepts.composeinstagramclone.auth.presentation.AuthViewModel
-import com.hashconcepts.composeinstagramclone.auth.presentation.ResultEvents
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthScreenEvents
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthViewModel
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.ResultEvents
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.ForgotPasswordScreenDestination
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.CustomFormTextField

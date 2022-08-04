@@ -6,31 +6,25 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.LockReset
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hashconcepts.composeinstagramclone.R
-import com.hashconcepts.composeinstagramclone.auth.presentation.AuthScreenEvents
-import com.hashconcepts.composeinstagramclone.auth.presentation.AuthViewModel
-import com.hashconcepts.composeinstagramclone.auth.presentation.ResultEvents
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthScreenEvents
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthViewModel
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.ResultEvents
 import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.common.components.CustomFormTextField
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
 import com.hashconcepts.composeinstagramclone.ui.theme.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 /**

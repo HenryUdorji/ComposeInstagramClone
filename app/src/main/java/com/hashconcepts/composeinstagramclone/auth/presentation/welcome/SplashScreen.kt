@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation
+package com.hashconcepts.composeinstagramclone.auth.presentation.welcome
 
 import android.window.SplashScreen
 import androidx.compose.foundation.Image
