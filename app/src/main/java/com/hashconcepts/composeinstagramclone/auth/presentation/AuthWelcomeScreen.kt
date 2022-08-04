@@ -26,6 +26,7 @@ import com.hashconcepts.composeinstagramclone.ui.theme.LightGray
 import com.hashconcepts.composeinstagramclone.ui.theme.LineColor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import timber.log.Timber
 
 /**
  * @created 30/07/2022 - 12:01 AM
@@ -55,17 +56,19 @@ fun AuthWelcomeScreen(
             Spacer(modifier = Modifier.height(50.dp))
 
             AsyncImage(
-                model = "https://raw.githubusercontent.com/mustfaibra/Instagraph/master/app/src/main/res/drawable/ed_sheeran.jpg",
+                model = viewModel.userState.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(85.dp),
+                error = painterResource(id = R.drawable.profile_placeholder),
+                fallback = painterResource(id = R.drawable.profile_placeholder),
                 placeholder = painterResource(id = R.drawable.profile_placeholder),
                 contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Ed Sheeran", style = MaterialTheme.typography.body1, fontSize = 13.sp)
+            Text(text = viewModel.userState.email, style = MaterialTheme.typography.body1, fontSize = 13.sp)
 
             Spacer(modifier = Modifier.height(12.dp))
             CustomRaisedButton(

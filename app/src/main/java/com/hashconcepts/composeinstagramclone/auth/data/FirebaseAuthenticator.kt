@@ -1,19 +1,16 @@
 package com.hashconcepts.composeinstagramclone.auth.data
 
 import android.net.Uri
-import com.google.android.gms.tasks.Tasks.await
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
 import com.hashconcepts.composeinstagramclone.auth.domain.Authenticator
+import com.hashconcepts.composeinstagramclone.auth.domain.model.User
 import com.hashconcepts.composeinstagramclone.common.utils.Constants
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
-import java.io.File
 
 /**
  * @created 30/07/2022 - 3:36 AM
@@ -54,8 +51,19 @@ class FirebaseAuthenticator : Authenticator {
         return Firebase.auth.currentUser
     }
 
-    override fun getUser(): FirebaseUser? {
-        return Firebase.auth.currentUser
+    override suspend fun getUser(): User? {
+        val firebaseUser = Firebase.auth.currentUser
+        firebaseUser?.let { user ->
+
+            val snapshot = Firebase.firestore.collection(Constants.USERS_COLLECTION)
+                .document(user.uid)
+                .get()
+                .await()
+            snapshot
+
+            return snapshot.toObject<User>()
+        }
+        return null
     }
 
     override suspend fun sendPasswordResetEmail(email: String) {
@@ -66,10 +74,10 @@ class FirebaseAuthenticator : Authenticator {
         Firebase.auth.verifyPasswordResetCode(code)
     }
 
-    override suspend fun saveUserProfile(createUserDto: CreateUserDto) {
+    override suspend fun saveUserProfile(user: User) {
         Firebase.firestore.collection(Constants.USERS_COLLECTION)
-            .document(createUserDto.uid)
-            .set(createUserDto)
+            .document(user.uid)
+            .set(user)
             .await()
     }
 
