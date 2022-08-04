@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.*
 import com.hashconcepts.composeinstagramclone.R
-import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
+import com.hashconcepts.composeinstagramclone.auth.domain.model.User
 import com.hashconcepts.composeinstagramclone.auth.presentation.AuthScreenEvents
 import com.hashconcepts.composeinstagramclone.auth.presentation.AuthViewModel
 import com.hashconcepts.composeinstagramclone.auth.presentation.ResultEvents
@@ -235,18 +235,13 @@ fun FormSection(imageUri: Uri?, viewModel: AuthViewModel) {
         text = "Sign up",
         isLoading = viewModel.isLoading
     ) {
-        val createUserDto = CreateUserDto(
+        val user = User(
             email = email.trim(),
             fullName = fullName,
             username = username.trim(),
             password = password.trim(),
         )
-        viewModel.onUserEvents(
-            AuthScreenEvents.OnRegister(
-                imageUri = imageUri,
-                createUserDto
-            )
-        )
+        viewModel.onUserEvents(AuthScreenEvents.OnRegister(imageUri = imageUri, user = user))
     }
 }
 
