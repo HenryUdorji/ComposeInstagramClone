@@ -24,6 +24,7 @@ import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.Result
 import com.hashconcepts.composeinstagramclone.common.components.CustomFormTextField
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
 import com.hashconcepts.composeinstagramclone.destinations.ForgotPasswordScreenDestination
+import com.hashconcepts.composeinstagramclone.destinations.HomeScreenDestination
 import com.hashconcepts.composeinstagramclone.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
 import com.hashconcepts.composeinstagramclone.ui.theme.LightGray
@@ -58,10 +59,7 @@ fun LoginScreen(
                     )
                 }
                 is ResultEvents.OnSuccess -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = events.message!!,
-                        duration = SnackbarDuration.Short
-                    )
+                    navigator.navigate(HomeScreenDestination)
                 }
             }
         }
