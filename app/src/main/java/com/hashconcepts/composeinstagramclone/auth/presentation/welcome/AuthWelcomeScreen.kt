@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation
+package com.hashconcepts.composeinstagramclone.auth.presentation.welcome
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -9,17 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.hashconcepts.composeinstagramclone.R
-import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.LoginScreenDestination
-import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.RegisterScreenDestination
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthViewModel
 import com.hashconcepts.composeinstagramclone.common.components.CustomRaisedButton
+import com.hashconcepts.composeinstagramclone.destinations.LoginScreenDestination
+import com.hashconcepts.composeinstagramclone.destinations.RegisterScreenDestination
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
 import com.hashconcepts.composeinstagramclone.ui.theme.LightGray
 import com.hashconcepts.composeinstagramclone.ui.theme.LineColor
@@ -36,7 +36,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination
 @Composable
 fun AuthWelcomeScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -53,17 +54,19 @@ fun AuthWelcomeScreen(
             Spacer(modifier = Modifier.height(50.dp))
 
             AsyncImage(
-                model = "https://raw.githubusercontent.com/mustfaibra/Instagraph/master/app/src/main/res/drawable/ed_sheeran.jpg",
+                model = viewModel.userState.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(85.dp),
+                error = painterResource(id = R.drawable.profile_placeholder),
+                fallback = painterResource(id = R.drawable.profile_placeholder),
                 placeholder = painterResource(id = R.drawable.profile_placeholder),
                 contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Ed Sheeran", style = MaterialTheme.typography.body1, fontSize = 13.sp)
+            Text(text = viewModel.userState.email, style = MaterialTheme.typography.body1, fontSize = 13.sp)
 
             Spacer(modifier = Modifier.height(12.dp))
             CustomRaisedButton(

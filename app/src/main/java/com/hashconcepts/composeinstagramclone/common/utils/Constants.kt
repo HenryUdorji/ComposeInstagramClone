@@ -10,4 +10,6 @@ object Constants {
     const val GALLERY: String = "gallery"
     const val USERS_COLLECTION: String = "users"
     const val PROFILE_IMAGE_STORAGE_REF: String = "profileImages"
+    const val PROFILE_IMAGE_URL: String = "profileImageUrl"
+    const val CURRENT_USER: String = "currentUser"
 }

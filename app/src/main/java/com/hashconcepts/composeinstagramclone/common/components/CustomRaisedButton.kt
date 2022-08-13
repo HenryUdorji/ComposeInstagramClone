@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.hashconcepts.composeinstagramclone.ui.theme.AccentColor
 import com.hashconcepts.composeinstagramclone.ui.theme.IconDark
@@ -17,6 +19,7 @@ import com.hashconcepts.composeinstagramclone.ui.theme.IconDark
  * @author  ifechukwu.udorji
  */
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomRaisedButton(
     modifier: Modifier = Modifier,
@@ -24,12 +27,16 @@ fun CustomRaisedButton(
     isLoading: Boolean = false,
     onClick: () -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(backgroundColor = AccentColor),
         shape = RoundedCornerShape(size = 5.dp),
-        onClick = onClick
+        onClick = {
+            keyboardController?.hide()
+            onClick()
+        }
     ) {
         if (isLoading) {
             CircularProgressIndicator(color = IconDark)

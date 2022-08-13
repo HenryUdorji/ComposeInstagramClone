@@ -1,6 +1,5 @@
-package com.hashconcepts.composeinstagramclone.auth.presentation
+package com.hashconcepts.composeinstagramclone.auth.presentation.welcome
 
-import android.window.SplashScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -15,8 +14,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hashconcepts.composeinstagramclone.R
-import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.AuthWelcomeScreenDestination
-import com.hashconcepts.composeinstagramclone.auth.presentation.destinations.LoginScreenDestination
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.AuthViewModel
+import com.hashconcepts.composeinstagramclone.destinations.AuthWelcomeScreenDestination
+import com.hashconcepts.composeinstagramclone.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -33,12 +33,18 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(
     navigator: DestinationsNavigator,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
 
     LaunchedEffect(key1 = true) {
         delay(500L)
-        navigator.popBackStack()
-        navigator.navigate(AuthWelcomeScreenDestination)
+        if (viewModel.userIsLoggedInAlready) {
+            navigator.popBackStack()
+            navigator.navigate(HomeScreenDestination)
+        } else {
+            navigator.popBackStack()
+            navigator.navigate(AuthWelcomeScreenDestination)
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

@@ -1,7 +1,7 @@
 package com.hashconcepts.composeinstagramclone.auth.domain
 
-import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
-import com.hashconcepts.composeinstagramclone.auth.presentation.ValidationResult
+import com.hashconcepts.composeinstagramclone.auth.domain.model.User
+import com.hashconcepts.composeinstagramclone.auth.presentation.viewmodel.ValidationResult
 
 /**
  * @created 31/07/2022 - 7:25 PM
@@ -10,11 +10,11 @@ import com.hashconcepts.composeinstagramclone.auth.presentation.ValidationResult
  */
 object AuthValidator {
 
-    fun validateCreateUserRequest(createUserDto: CreateUserDto): ValidationResult {
-        val username = createUserDto.username
-        val password = createUserDto.password
-        val email = createUserDto.email
-        val fullName = createUserDto.fullName
+    fun validateCreateUserRequest(user: User): ValidationResult {
+        val username = user.username
+        val password = user.password
+        val email = user.email
+        val fullName = user.fullName
 
         if (username.isBlank() && password.isBlank() && email.isBlank() && fullName.isBlank()) {
             return ValidationResult(

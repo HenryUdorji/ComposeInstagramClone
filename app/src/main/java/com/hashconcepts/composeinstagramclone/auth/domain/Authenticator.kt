@@ -2,7 +2,7 @@ package com.hashconcepts.composeinstagramclone.auth.domain
 
 import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
-import com.hashconcepts.composeinstagramclone.auth.data.dto.CreateUserDto
+import com.hashconcepts.composeinstagramclone.auth.domain.model.User
 
 /**
  * @created 30/07/2022 - 3:25 AM
@@ -19,13 +19,13 @@ interface Authenticator {
 
     fun signOut() : FirebaseUser?
 
-    fun getUser() : FirebaseUser?
+    suspend fun getUser() : User?
 
     suspend fun sendPasswordResetEmail(email :String)
 
     suspend fun verifyPasswordResetCode(code: String)
 
-    suspend fun saveUserProfile(createUserDto: CreateUserDto)
+    suspend fun saveUserProfile(user: User)
 
     suspend fun uploadUserProfile(imageUri: Uri): String
 }
