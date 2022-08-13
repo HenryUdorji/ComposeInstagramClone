@@ -196,8 +196,8 @@ fun SignUpSection(onSignUpClicked: () -> Unit) {
 
 @Composable
 fun ColumnScope.FormSection(viewModel: AuthViewModel, onForgotPasswordClicked: () -> Unit) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("henryudorji@gmail.com") }
+    var password by remember { mutableStateOf("123456") }
 
     CustomFormTextField(
         modifier = Modifier

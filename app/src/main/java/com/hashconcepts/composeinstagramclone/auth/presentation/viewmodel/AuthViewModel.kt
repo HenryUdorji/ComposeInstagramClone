@@ -9,10 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.hashconcepts.composeinstagramclone.auth.domain.AuthRepository
 import com.hashconcepts.composeinstagramclone.auth.domain.AuthValidator
 import com.hashconcepts.composeinstagramclone.auth.domain.model.User
+import com.hashconcepts.composeinstagramclone.common.data.SharedPrefUtil
+import com.hashconcepts.composeinstagramclone.common.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -23,7 +26,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val sharedPrefUtil: SharedPrefUtil,
 ) : ViewModel() {
 
     private val eventChannel = Channel<ResultEvents>()
@@ -34,6 +38,8 @@ class AuthViewModel @Inject constructor(
 
     var isLoading by mutableStateOf(false)
         private set
+
+    var userIsLoggedInAlready = sharedPrefUtil.getString(Constants.PROFILE_IMAGE_URL) != null
 
     init {
         getUser()
@@ -165,6 +171,9 @@ class AuthViewModel @Inject constructor(
 
     private fun getUser() = viewModelScope.launch {
         val user = authRepository.getUser()
-        userState = userState.copy(email = user?.email ?: "", imageUrl = user?.imageUrl ?: "")
+        user?.let {
+            sharedPrefUtil.saveString(Constants.PROFILE_IMAGE_URL, user.imageUrl)
+            userState = userState.copy(uid = user.uid, email = user.email, imageUrl = user.imageUrl)
+        }
     }
 }

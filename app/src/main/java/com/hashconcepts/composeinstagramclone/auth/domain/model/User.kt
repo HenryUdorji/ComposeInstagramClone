@@ -1,12 +1,13 @@
 package com.hashconcepts.composeinstagramclone.auth.domain.model
 
-import com.google.firebase.firestore.FieldValue
+import androidx.annotation.Keep
 
 /**
  * @created 04/08/2022 - 10:04 AM
  * @project ComposeInstagramClone
  * @author  ifechukwu.udorji
  */
+@Keep
 data class User(
     val uid: String = "",
     val username: String = "",

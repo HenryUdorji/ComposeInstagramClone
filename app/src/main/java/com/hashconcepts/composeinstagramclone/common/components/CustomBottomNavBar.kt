@@ -3,6 +3,7 @@ package com.hashconcepts.composeinstagramclone.common.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomNavigation
@@ -30,12 +31,12 @@ import com.hashconcepts.composeinstagramclone.ui.theme.IconLight
  * @project ComposeInstagramClone
  * @author  ifechukwu.udorji
  */
-sealed class BottomNavItem(val iconRes: Int, val destination: DirectionDestination) {
-    object HomeScreen : BottomNavItem(R.drawable.ic_home, HomeScreenDestination)
-    object SearchScreen : BottomNavItem(R.drawable.ic_search, SearchScreenDestination)
-    object PostScreen : BottomNavItem(R.drawable.ic_post, PostScreenDestination)
-    object ActivityScreen : BottomNavItem(R.drawable.ic_activity, ActivityScreenDestination)
-    object ProfileScreen : BottomNavItem(0, ProfileScreenDestination)
+sealed class BottomNavItem(val iconRes: Int, val filledIconRes: Int, val destination: DirectionDestination) {
+    object HomeScreen : BottomNavItem(R.drawable.ic_home, R.drawable.ic_home_filled, HomeScreenDestination)
+    object SearchScreen : BottomNavItem(R.drawable.ic_search, R.drawable.ic_search_filled, SearchScreenDestination)
+    object PostScreen : BottomNavItem(R.drawable.ic_post, R.drawable.ic_post_filled, PostScreenDestination)
+    object ActivityScreen : BottomNavItem(R.drawable.ic_activity, R.drawable.ic_activity_filled, ActivityScreenDestination)
+    object ProfileScreen : BottomNavItem(0, 0, ProfileScreenDestination)
 }
 
 val bottomNavItems = listOf(
@@ -48,7 +49,6 @@ val bottomNavItems = listOf(
 
 @Composable
 fun CustomBottomNavBar(
-    modifier: Modifier = Modifier,
     profileImage: String,
     navController: NavController,
     navItems: List<BottomNavItem> = bottomNavItems,
@@ -88,12 +88,25 @@ fun CustomBottomNavBar(
                         )
                     } else {
                         Icon(
-                            painter = painterResource(id = item.iconRes),
+                            painter = if (selectedNavItem) painterResource(id = item.filledIconRes) else painterResource(id = item.iconRes),
                             contentDescription = null
                         )
                     }
                 },
-                onClick = { /*TODO*/ }
+                onClick = {
+                    if (!selectedNavItem) {
+                        navController.popBackStack()
+                        navController.navigate(item.destination.route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
             )
         }
     }

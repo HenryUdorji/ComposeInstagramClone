@@ -13,14 +13,20 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.hashconcepts.composeinstagramclone.common.components.CustomBottomNavBar
+import com.hashconcepts.composeinstagramclone.common.data.SharedPrefUtil
+import com.hashconcepts.composeinstagramclone.common.utils.Constants
 import com.hashconcepts.composeinstagramclone.destinations.*
 import com.hashconcepts.composeinstagramclone.ui.theme.ComposeInstagramCloneTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var sharedPrefUtil: SharedPrefUtil
+
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +51,10 @@ class MainActivity : ComponentActivity() {
                     backgroundColor = MaterialTheme.colors.background,
                     bottomBar = {
                         if (showBottomBar) {
-                            CustomBottomNavBar(profileImage = "https://google.com", navController = navController)
+                            CustomBottomNavBar(
+                                profileImage = sharedPrefUtil.getString(Constants.PROFILE_IMAGE_URL)!!,
+                                navController = navController
+                            )
                         }
                     }
                 ) {
