@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
             val showBottomBar = route in listOf(
                 HomeScreenDestination.route,
-                PostScreenDestination.route,
+                ReelsScreenDestination.route,
                 ProfileScreenDestination.route,
                 SearchScreenDestination.route,
                 ActivityScreenDestination.route

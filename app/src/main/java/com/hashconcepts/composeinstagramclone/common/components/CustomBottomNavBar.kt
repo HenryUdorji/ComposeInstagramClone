@@ -3,16 +3,19 @@ package com.hashconcepts.composeinstagramclone.common.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -31,18 +34,33 @@ import com.hashconcepts.composeinstagramclone.ui.theme.IconLight
  * @project ComposeInstagramClone
  * @author  ifechukwu.udorji
  */
-sealed class BottomNavItem(val iconRes: Int, val filledIconRes: Int, val destination: DirectionDestination) {
-    object HomeScreen : BottomNavItem(R.drawable.ic_home, R.drawable.ic_home_filled, HomeScreenDestination)
-    object SearchScreen : BottomNavItem(R.drawable.ic_search, R.drawable.ic_search_filled, SearchScreenDestination)
-    object PostScreen : BottomNavItem(R.drawable.ic_post, R.drawable.ic_post_filled, PostScreenDestination)
-    object ActivityScreen : BottomNavItem(R.drawable.ic_activity, R.drawable.ic_activity_filled, ActivityScreenDestination)
+sealed class BottomNavItem(
+    val iconRes: Int,
+    val filledIconRes: Int,
+    val destination: DirectionDestination
+) {
+    object HomeScreen :
+        BottomNavItem(R.drawable.ic_home, R.drawable.ic_home_filled, HomeScreenDestination)
+
+    object SearchScreen :
+        BottomNavItem(R.drawable.ic_search, R.drawable.ic_search_filled, SearchScreenDestination)
+
+    object ReelsScreen :
+        BottomNavItem(R.drawable.ic_reels, R.drawable.ic_reels_filled, ReelsScreenDestination)
+
+    object ActivityScreen : BottomNavItem(
+        R.drawable.ic_activity,
+        R.drawable.ic_activity_filled,
+        ActivityScreenDestination
+    )
+
     object ProfileScreen : BottomNavItem(0, 0, ProfileScreenDestination)
 }
 
 val bottomNavItems = listOf(
     BottomNavItem.HomeScreen,
     BottomNavItem.SearchScreen,
-    BottomNavItem.PostScreen,
+    BottomNavItem.ReelsScreen,
     BottomNavItem.ActivityScreen,
     BottomNavItem.ProfileScreen,
 )
@@ -58,7 +76,7 @@ fun CustomBottomNavBar(
     val currentRoute = navBackStackEntry?.destination?.route
 
     BottomNavigation(
-        backgroundColor = if (darkTheme) FormFieldBgDark else FormFieldBgLight,
+        backgroundColor = if (darkTheme) Color.Black else Color.White,
         elevation = 5.dp
     ) {
         navItems.forEach { item ->
@@ -88,7 +106,9 @@ fun CustomBottomNavBar(
                         )
                     } else {
                         Icon(
-                            painter = if (selectedNavItem) painterResource(id = item.filledIconRes) else painterResource(id = item.iconRes),
+                            painter = if (selectedNavItem) painterResource(id = item.filledIconRes) else painterResource(
+                                id = item.iconRes
+                            ),
                             contentDescription = null
                         )
                     }
