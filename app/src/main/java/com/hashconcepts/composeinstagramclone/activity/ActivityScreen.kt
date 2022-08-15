@@ -1,4 +1,4 @@
-package com.hashconcepts.composeinstagramclone.home
+package com.hashconcepts.composeinstagramclone.activity
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,13 +18,13 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination
 @Composable
-fun PostScreen(
+fun ActivityScreen(
     navigator: DestinationsNavigator
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "POST", style = MaterialTheme.typography.h1)
+        Text(text = "ACTIVITY", style = MaterialTheme.typography.h1)
     }
 }
