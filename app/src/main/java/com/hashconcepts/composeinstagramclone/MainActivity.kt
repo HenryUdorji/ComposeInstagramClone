@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         if (showBottomBar) {
                             CustomBottomNavBar(
-                                profileImage = sharedPrefUtil.getString(Constants.PROFILE_IMAGE_URL)!!,
+                                profileImage = sharedPrefUtil.getString(Constants.PROFILE_IMAGE_URL) ?: "",
                                 navController = navController
                             )
                         }

@@ -59,6 +59,7 @@ fun LoginScreen(
                     )
                 }
                 is ResultEvents.OnSuccess -> {
+                    navigator.popBackStack()
                     navigator.navigate(HomeScreenDestination)
                 }
             }

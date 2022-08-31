@@ -14,12 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 import com.hashconcepts.composeinstagramclone.R
 import com.hashconcepts.composeinstagramclone.ui.theme.FormFieldBgDark
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.launch
 
 /**
  * @created 05/08/2022 - 12:48 AM
@@ -27,33 +32,59 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
  * @author  ifechukwu.udorji
  */
 
+@OptIn(ExperimentalPagerApi::class)
 @Destination
 @Composable
 fun PostScreen(
     navigator: DestinationsNavigator
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            ToolbarSection {
-                navigator.navigateUp()
-            }
+    Column(modifier = Modifier.fillMaxSize()) {
+        ToolbarSection {
+            navigator.navigateUp()
         }
 
-        var option by remember { mutableStateOf("POST") }
-        BottomOptionSection(
-            selectedItem = option,
-            onOptionSelected = { option = it }
-        )
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.Center,
+        ) {
+            val options = listOf("POST", "STORY", "REEL")
+            val scope = rememberCoroutineScope()
+            val pagerState = rememberPagerState()
+
+            MainSection(pagerState = pagerState)
+
+            BottomOptionSection(
+                options,
+                selectedItem = pagerState.currentPage,
+                onOptionSelected = { position ->
+                    scope.launch {
+                        pagerState.scrollToPage(position)
+                    }
+                }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun MainSection(pagerState: PagerState) {
+    val darkTheme: Boolean = isSystemInDarkTheme()
+
+    HorizontalPager(
+        count = 3,
+        state = pagerState,
+        modifier = Modifier.fillMaxSize()
+    ) { page ->
+        Text(text = "Screen $page", style = MaterialTheme.typography.h1, textAlign = TextAlign.Center)
     }
 }
 
 @Composable
 fun BoxScope.BottomOptionSection(
-    onOptionSelected: (String) -> Unit,
-    selectedItem: String,
+    options: List<String>,
+    onOptionSelected: (Int) -> Unit,
+    selectedItem: Int,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
@@ -62,19 +93,18 @@ fun BoxScope.BottomOptionSection(
             .padding(10.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(FormFieldBgDark.copy(alpha = 0.8f))
-            .padding(horizontal = 5.dp)
+            .padding(horizontal = 7.dp, vertical = 5.dp)
             .align(Alignment.BottomEnd)
     ) {
-        val options = listOf("POST", "STORY", "REEL")
 
         options.forEach { option ->
             Text(
                 text = option,
                 style = MaterialTheme.typography.body1,
-                color = if (selectedItem == option) Color.White else Color.Gray,
+                color = if (options.indexOf(option) == selectedItem) Color.White else Color.Gray,
                 modifier = Modifier
                     .padding(5.dp)
-                    .clickable { onOptionSelected(option) }
+                    .clickable { onOptionSelected(options.indexOf(option)) }
             )
         }
     }
@@ -94,7 +124,7 @@ fun ToolbarSection(onClose: () -> Unit) {
             painter = painterResource(id = R.drawable.ic_exit),
             contentDescription = null,
             modifier = Modifier
-                .size(25.dp)
+                .size(22.dp)
                 .clickable { onClose() }
         )
 
